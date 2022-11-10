@@ -109,5 +109,6 @@ def main(tree, options):
 
 if __name__ == '__main__':
     args = osbuild.api.arguments()
+    print("tree:{} \n options: {}".format(args["tree"], args["options"]))
     r = main(args["tree"], args["options"])
     sys.exit(r)
