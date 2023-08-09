@@ -64,8 +64,8 @@ SCHEMA = r"""
     }
   },
   "unit-type": {
-    "type": "string"
-    "enum": ["system", "global"]
+    "type": "string",
+    "enum": ["system", "global"],
     "default": "system",
     "description": "Selects between systemd system or global unit to add dropin"
   }
@@ -77,15 +77,15 @@ def main(tree, options):
     unit = options["unit"]
     dropin_file = options["dropin"]
     cfg = options["config"]
-    systemd_options = options["unit-type"]
+    unit_type = options.get("unit-type","system")
 
     # ensure the unit name + ".d" does not exceed maximum filename length
     if len(unit+".d") > 255:
         raise ValueError(f"Error: the {unit} unit drop-in directory exceeds the maximum filename length.")
 
-    if systemd_options == "system":
+    if unit_type == "system":
           unit_dropins_dir = f"{tree}/usr/lib/systemd/system/{unit}.d"
-    elif systemd_options == "global":
+    elif unit_type == "global":
           unit_dropins_dir = f"{tree}/usr/lib/systemd/user/{unit}.d"
           
     os.makedirs(unit_dropins_dir, exist_ok=True)
